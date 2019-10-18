@@ -16,8 +16,8 @@ import scrapy
 CONST_DATETIME_STD_FORMAT = '%Y-%m-%d %H:%M:%S'
 CONST_TIMEZONE = pytz.timezone('Europe/Berlin')
 articleList = []
-URL1 = 'https://www.njuskalo.hr/prodaja-kuca/zagreb?price[max]=131000&livingArea[min]=100'
-URL2 = 'https://www.njuskalo.hr/prodaja-kuca/zagreb?price%5Bmax%5D=131000&livingArea%5Bmin%5D=100&page=2'
+URL1 = 'https://www.njuskalo.hr/prodaja-kuca/zagreb?price[max]=251000&livingArea[min]=100'
+URL2 = 'https://www.njuskalo.hr/prodaja-kuca/zagreb?price%5Bmax%5D=251000&livingArea%5Bmin%5D=100&page=2'
 
 def get_page(url):
     # last_update_datetime = read_update_date()
@@ -34,7 +34,7 @@ def get_page(url):
     entityList = soup.find("", {"class": "EntityList--ListItemRegularAd"})
     # entityListItem = entityList.find_all("a", {"class": "link"})
 
-    #iščupaj naslov i cijenu oglasa    
+    #iščupaj naslov,cijenu i ostale elemente oglasa    
     entityArticles = entityList.find_all("article")
     for article in entityArticles:
         id = article.find("a")["name"]
