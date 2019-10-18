@@ -35,11 +35,10 @@ def get_page(url):
     # entityListItem = entityList.find_all("a", {"class": "link"})
 
     #iščupaj naslov i cijenu oglasa    
-    entityArticles = entityList.find_all("article")
+    entityArticles = entityList.find_all('article')
     for article in entityArticles:
-        id = article.find("a")["name"]
-        title = article.find("a").get_text().strip()
-        price = article.find("", {"class": "price--eur"}).get_text().strip().replace(u'\xa0', ' ') + "  " + article.find("", {"class": "price--hrk"}).get_text().strip().replace(u'\xa0', ' ')
+        title = (article.find('a').get_text().strip())
+        price = (article.find("", {"class": "price--eur"}).get_text().strip().replace(u'\xa0', ' ') + "  " + article.find("", {"class": "price--hrk"}).get_text().strip().replace(u'\xa0', ' '))
         datetime_str = article.find("time").get("datetime")
         # datetime = dt.datetime.strptime(datetime_str[0:19], '%Y-%m-%dT%H:%M:%S')
         datetime = dt.datetime.fromisoformat(datetime_str)
@@ -50,14 +49,10 @@ def get_page(url):
         # print(image)
         published = datetime.strftime("%d.%m.%Y. %H:%M:%S")
      
-        #pogledaj koji su novi unazad 4 sata
-        if datetime > last_update_datetime:   
-            #pogledaj da li imamo id tog oglasa u tablici(tamo zapisujemo id-eve koje šaljemo na mail da ne ponavljamo),
-            # jer njuškalo periodički ponovno obnovi objavu starog oglasa      
-            if (not search_in_file(id)):
-                articleList.append(Article(title, price, image, link, published))
-                write_in_file(id)
-       
+        if datetime > last_update_datetime:
+            articleList.append(Article(title, price, image, link, published))
+    
+   
     # update_config_file()
 
 
@@ -111,18 +106,6 @@ def read_update_date():
 def update_config_file():
     f = open("config.txt", "w")
     f.write(dt.datetime.now().strftime(CONST_DATETIME_STD_FORMAT))
-    f.close()
-
-def search_in_file(word):
-    with open('ids.txt') as f:
-        if word in f.read():
-            return True
-        else:
-            return False
-
-def write_in_file(word):
-    f = open("ids.txt", "a")
-    f.write(word + ";")
     f.close()
 
 def run():
